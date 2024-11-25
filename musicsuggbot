@@ -140,7 +140,3 @@ if __name__ == "__main__":
     # Run the bot
     print("Бот запущен...")
     app.run_polling()
-
-
-    Vladislav
-    
