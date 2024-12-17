@@ -55,8 +55,6 @@ def find_unknown_artists(genre, max_listeners=50000):
             for artist in artists if artist["followers"]["total"] <= max_listeners
         ]
 
-        if not unknown_artists:
-            print(f"Для жанра {genre} не найдено исполнителей с ограничением {max_listeners} слушателей.")
         return unknown_artists
 
     except Exception as e:
@@ -80,15 +78,19 @@ async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if genre_data:
                 popular_genres = get_popular_genres(genre_data)
                 response = "Вот рекомендации по малоизвестным артистам:\n\n"
+                any_artists_found = False  # Флаг для проверки, были ли найдены артисты
+
                 for genre, _ in popular_genres:
                     artists = find_unknown_artists(genre)
-                    response += f"🎵 Жанр: {genre}\n"
                     if artists:
+                        response += f"🎵 Жанр: {genre}\n"
                         for artist in artists:
                             response += f"  - [{artist['name']}]({artist['link']}) ({artist['listeners']} слушателей)\n"
-                    # else:
-                    #     response += "  - Не удалось найти артистов с таким количеством слушателей.\n"
-                    # response += "\n"
+                        response += "\n"
+                        any_artists_found = True
+
+                if not any_artists_found:
+                    response = "Не удалось найти малоизвестных исполнителей для предложенных жанров."
             else:
                 response = "Не удалось получить данные о жанрах. Возможно, плейлист пуст или доступ к нему ограничен."
         except Exception as e:
