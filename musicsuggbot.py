@@ -87,7 +87,7 @@ async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         for artist in artists:
                             response += f"  - [{artist['name']}]({artist['link']}) ({artist['listeners']} слушателей)\n"
                     else:
-                        response += "  - Не удалось найти артистов\n"
+                        response += "  - Не удалось найти артистов с таким количеством слушателей.\n"
                     response += "\n"
             else:
                 response = "Не удалось получить данные о жанрах. Возможно, плейлист пуст или доступ к нему ограничен."
